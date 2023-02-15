@@ -2,7 +2,6 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: guestbook-route
-  namespace: lfranchini31-dev
   labels:
     app: frontend-ui
     lab: kubernetes-lab

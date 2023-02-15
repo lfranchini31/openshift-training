@@ -30,6 +30,6 @@ SI vous voulez récupérer l'URL de l'application, il suffit de taper la command
 $ *oc get route*
 ----
 
-Copier l'URL dans votre barre d'adresse de votre navigateur et vous devriez voir quelque chose comme ceci ::
+Copier l'URL dans votre barre d'adresse de votre navigateur et vous devriez voir quelque chose comme ceci :
 
 image::images/app-screenshot.png[App Screenshot,float="center",align="center"]
