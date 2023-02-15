@@ -6,8 +6,8 @@ Commencez par cloner le référentiel github pour l'application Guestbook et dé
 
 [source, bash, subs="normal,attributes"]
 ----
-$ *git clone https://github.com/redhat-developer-demos/kubernetes-lab*
-$ *cd kubernetes-lab/kubernetes* 
+$ *git clone https://github.com/lfranchini31/openshift-training*
+$ *cd openshift-training/openshift* 
 ----
 
 Les ressources Kubernetes peuvent être spécifiées à l'aide des formats link:http://yaml.org/[yaml] ou link:http://www.json.org/[json].

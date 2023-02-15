@@ -7,7 +7,7 @@ Dans cet atelier, nous allons basculer vers le répertoire _frontend/_ et apport
 
 [source, bash, subs="normal,attributes"]
 ----
-$ *cd kubernetes-lab/frontend*
+$ *cd openshift-training/frontend*
 $ *vi index.html*
 ----
 [TIP]

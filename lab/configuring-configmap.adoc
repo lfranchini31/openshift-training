@@ -2,7 +2,7 @@
 
 Dans cette section, nous utiliserons l'objet ConfigMap, pour configurer l'application. Vous pouvez stocker plusieurs fichiers de configuration basés sur des chaînes dans une seule configuration ConfigMap. Dans notre exemple, nous allons stocker le fichier config.json de Vert.x dans une entrée ConfigMap (Attention : les ConfigMap ont une taille max 1MB).
 
-Tout d'abord, mettez à jour _kubernetes-lab/hellworld-service/config.json_ avec une nouvelle valeur de configuration :
+Tout d'abord, mettez à jour _openshift-training/hellworld-service/config.json_ avec une nouvelle valeur de configuration :
 [source, bash, subs="normal,attributes"]
 ----
 $ *cd openshift-training/hellworld-service/*

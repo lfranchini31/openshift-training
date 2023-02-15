@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/redhat-developer-demos/kubernetes-lab.git"
+    "url": "git+https://github.com/lfranchini31/openshift-training.git"
   },
   "author": "Red Hat Developers",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/redhat-developer-demos/kubernetes-lab/issues"
+    "url": "https://github.com/lfranchini31/openshift-training/issues"
   },
-  "homepage": "https://github.com/redhat-developer-demos/kubernetes-lab#readme",
+  "homepage": "https://github.com/lfranchini31/openshift-training#readme",
   "dependencies": {
     "body-parser": "^1.15.1",
     "bootstrap": "~3.3.5",

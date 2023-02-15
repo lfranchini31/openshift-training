@@ -76,7 +76,7 @@ NOTE: Pour construire à partir de local, vous devez vous trouver à la racine d
 
 [source, bash, subs="normal,attributes"]
 ----
-$ cd kubernetes-lab/
+$ cd openshift-training/
 $ *oc start-build frontend-ui \
           --from-dir=. \
           --follow*
