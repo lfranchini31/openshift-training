@@ -1,0 +1,15 @@
+### Récupérer les sources du Guestbook (_Livre d'Or_)
+
+Duration: 3:00
+
+Commencez par cloner le référentiel github pour l'application Guestbook et déplacez-vous dans le répertoire des exemples kubernetes.
+
+[source, bash, subs="normal,attributes"]
+----
+$ *git clone https://github.com/redhat-developer-demos/kubernetes-lab*
+$ *cd kubernetes-lab/kubernetes* 
+----
+
+Les ressources Kubernetes peuvent être spécifiées à l'aide des formats link:http://yaml.org/[yaml] ou link:http://www.json.org/[json].
+Nous utiliserons les fichiers yaml de ce répertoire pour décrire et déployer les objets Kubernetes dans notre environnement de développement. Vous êtes certainement encouragé à les lire et à voir comment les pods, les services et autres sont déclarés:).
+Nous allons parcourir quelques-uns de ces fichiers en détail.

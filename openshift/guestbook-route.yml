@@ -1,0 +1,19 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: guestbook-route
+  namespace: lfranchini31-dev
+  labels:
+    app: frontend-ui
+    lab: kubernetes-lab
+spec:
+  to:
+    kind: Service
+    name: frontend-ui
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    destinationCACertificate: ''
+  path: /
+  port:
+    targetPort: http-80

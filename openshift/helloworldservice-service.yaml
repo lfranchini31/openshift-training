@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: helloworld-service-vertx
+  labels:
+    app: helloworld-service-vertx
+    lab: kubernetes-lab
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: helloworld-service-vertx

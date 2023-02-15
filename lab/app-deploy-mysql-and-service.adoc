@@ -1,0 +1,30 @@
+### Déployer MySQL et son service
+Duration: 4:00
+
+MySQL utilise un stockage persistant. Plutôt que d'écrire les données directement dans l'image du conteneur elle-même, notre exemple stocke MySQL dans un volume persistant. Avant de pouvoir déployer le pod, vous devez revendiquer un volume persistant qui peut être monté à l'intérieur du conteneur MySQL :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc create -f mysql-pvc.yaml*
+persistentvolumeclaim/mysql-pvc created
+----
+
+Vous pouvez voir *PersistentVolumeClaim* avec la commande suivante :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get pvc*
+NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+mysql-pvc   Bound    pvc-354415c7-8af2-4909-938b-2da969e5047f   1Gi        RWO            gp3            5m
+----
+
+Vous pouvez ensuite déployer à la fois le pod MySQL et le service avec une seule commande :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc create -f mysql-deployment.yaml -f mysql-service.yaml*
+deployment.extensions/mysql created
+service/mysql created
+----
+
+Enfin, vous pouvez voir les pods et l'état du service via la ligne de commande. Rappelez la commande que vous pouvez utiliser pour voir l'état (indice : _oc get ..._). Assurez-vous que l'état est _Running_ avant de continuer.

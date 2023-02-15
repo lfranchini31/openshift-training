@@ -1,0 +1,6 @@
+[TIP]
+====
+HINT 1: Type *'i'* to enter in edit mode 
+
+HINT 2: Type *':wq'* to exit from vi
+====

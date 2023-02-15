@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+    lab: kubernetes-lab
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels: 
+        app: mysql
+        lab: kubernetes-lab
+    spec:
+      containers: 
+      - name: mysql
+        image: openshift/mysql-56-centos7
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits :
+            cpu: 0.5
+        env:
+        - name: MYSQL_USER
+          value: myuser
+        - name: MYSQL_PASSWORD
+          value: mypassword
+        - name: MYSQL_DATABASE
+          value: guestbook
+        ports: 
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+          # name must match the volume name below
+        - name: mysql-persistent-volume
+          # mount path within the container
+          mountPath: /var/lib/mysql/data
+      volumes:
+      - name: mysql-persistent-volume
+        persistentVolumeClaim:
+          claimName: mysql-pvc

@@ -1,0 +1,43 @@
+### Rolling Update
+Duration: 10:00
+
+Il est facile de mettre à jour et de restaurer.
+
+Dans cet atelier, nous allons basculer vers le répertoire _frontend/_ et apporter une modification mineure au fichier index.html (par exemple, modifier la couleur d'arrière-plan, le titre, etc.). Après cela, reconstruisez le conteneur.
+
+[source, bash, subs="normal,attributes"]
+----
+$ *cd kubernetes-lab/frontend*
+$ *vi index.html*
+----
+[TIP]
+====
+HINT 1: Modifiez la ligne _<h2>Dites bonjour</h2>_, mais n'hésitez pas à modifier le contenu HTML de votre choix
+
+HINT 2: Tapez *':51'* pour accéder à cette ligne
+
+HINT 3: Tapez *'i'* pour entrer en mode édition
+
+HINT 4: Tapez *':wq'* pour sortir du mode vi
+====
+
+Kubernetes doit être conscient de la nouvelle image Docker avec les modifications que vous avez introduites.
+
+TIP: Remplacer rafabene/microservices-frontend:2.0 to <votre_nom>/microservices-frontend:2.0
+
+[source, bash, subs="normal,attributes"]
+----
+$ *docker build -t <your_username>/microservices-frontend:2.0 .*
+
+$ *docker push  <your_username>/microservices-frontend:2.0*
+----
+
+Nous allons maintenant utiliser la commande _kubectl rolling-update_ pour effectuer la mise à jour progressive. Nous créons un nouveau *ReplicationController* appelé frontend-ui-2 qui contient la nouvelle image.
+
+[source,bash, subs="normal,attributes"]
+----
+$ *oc set image  deployment/frontend-ui frontend-ui=rafabene/microservices-frontend:2.0*
+deployment.extensions/frontend-ui image updated
+----
+
+C'est ça! Kubernetes effectuera une mise à jour continue pour mettre à jour toutes les versions de 1.0 à 2.0.

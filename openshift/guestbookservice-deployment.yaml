@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-service
+  labels:
+    app: guestbook-service
+    lab: kubernetes-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook-service
+  template:
+    metadata:
+      labels:
+        app: guestbook-service
+        lab: kubernetes-lab
+    spec:
+      containers:
+      - name: guestbook-service
+        image: rafabene/microservices-guestbook:1.0
+        ports:
+        - name: http
+          containerPort: 8080

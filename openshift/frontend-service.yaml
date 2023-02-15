@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend-ui
+  labels:
+    app: frontend-ui
+    lab: kubernetes-lab
+spec:
+  ports:
+    - port: 80
+      name: http-80
+      targetPort: http
+  selector:
+    app: frontend-ui

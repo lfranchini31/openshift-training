@@ -1,0 +1,57 @@
+### Scaling
+Duration: 5:00
+
+Il semble que les *Deployments* conservent le même nombre de replicas en cours d'exécution. Vérifions à nouveau le nombre de pods. Exécuter:
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get pods*
+NAME                             READY     STATUS    RESTARTS   AGE
+frontend-ui-6jy22                1/1       Running   0          24m
+frontend-ui-7tcgx                1/1       Running   0          24m
+guestbook-service-gxjnx          1/1       Running   0          19m
+helloworld-service-vertx-edux9   1/1       Running   0          20m
+helloworld-service-vertx-lq1m0   1/1       Running   0          21m
+mysql-q9k7p                      1/1       Running   0          21m
+----
+
+La mise à l'échelle du nombre de replicas de notre service Hello World est aussi simple que d'exécuter :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc scale deployment helloworld-service-vertx --replicas=6*
+deployment "helloworld-service-vertx" scaled
+----
+
+Vous pouvez voir très rapidement que le replication controller a été mis à jour :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get deployments*
+NAME                       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+frontend-ui                2         2         2            2           3h
+guestbook-service          1         1         1            1           2h
+helloworld-service-vertx   6         6         6            6           2h
+mysql                      1         1         1            1           2h
+
+$ *oc get pods*
+NAME                                        READY     STATUS    RESTARTS   AGE
+frontend-ui-2676544744-3k1p6                1/1       Running   0          3h
+frontend-ui-2676544744-b88hg                1/1       Running   0          3h
+guestbook-service-114023015-8x9j8           1/1       Running   0          2h
+helloworld-service-vertx-3644252884-73cxk   1/1       Running   0          48s
+helloworld-service-vertx-3644252884-t364t   1/1       Running   0          2h
+helloworld-service-vertx-3644252884-v5t67   1/1       Running   0          48s
+helloworld-service-vertx-3644252884-wct43   1/1       Running   0          48s
+helloworld-service-vertx-3644252884-x7ggl   1/1       Running   0          48s
+helloworld-service-vertx-3644252884-xxvzh   1/1       Running   0          2h
+mysql-471477625-rnjt1                       1/1       Running   0          2h
+----
+
+Réduisez le nombre d'instances dupliquées à 2 afin que nous puissions libérer des ressources pour la suite :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc scale deployment helloworld-service-vertx --replicas=2*
+deployment "helloworld-service-vertx" scaled
+----

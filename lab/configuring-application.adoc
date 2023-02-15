@@ -1,0 +1,19 @@
+### Configurer l'application
+Duration: 20:00
+
+Le service Helloworld est configuré pour renvoyer un message qui utilise le modèle suivant :
+[source,subs="normal,attributes"]
+----
+Hello {name} from {hostname} with {version}
+----
+
+Il existe plusieurs façons de mettre à jour cette configuration. Nous en passerons en revue quelques-unes, notamment :
+
+* Variable d'environnement
+* Argument de ligne de commande
+* Et, ConfigMap
+
+include::configuring-envvars.adoc[]
+
+include::configuring-configmap.adoc[]
+

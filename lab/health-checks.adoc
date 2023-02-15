@@ -1,0 +1,78 @@
+### Health Checks
+Duration: 10:00
+
+Lors de la mise à jour progressive (_RollingUpdate_), un pod est supprimé dès qu'une version plus récente du pod est disponible et prête à servir. Par défaut, sans vérifications de l'état, Kubernetes achemine le trafic vers le nouveau pod dès que les pods démarrent. 
+
+Mais, il est fort probable que votre application mettra un certain temps à démarrer, et si vous acheminez le trafic vers l'application qui n'est pas prête à servir, vos utilisateurs (et/ou consommateurs de services) verront des erreurs. Pour éviter cela, Kubernetes est livré avec deux types de vérifications : Liveness Probe et Readiness Probe.
+
+Une fois qu'un conteneur a démarré, il n'est pas marqué comme Sain (Healthy) tant que la Liveness Probe n'a pas OK. Cependant, si le nombre d'échecs de Liveness Probe dépasse un seuil d'échec configurable, Kubernetes marquera le pod comme non Healthy et tentera de le redémarrer.
+
+Lorsqu'un pod est Healthy, cela ne signifie pas qu'il est prêt pour recevoir du trafic. Vous souhaiterez peut-être préparer les requêtes/le cache et/ou transférer l'état d'autres instances. Vous pouvez en outre marquer le moment où le pod est prêt à servir en utilisant une Readiness Probe.
+
+Ajoutons une Liveness Probe à notre service Helloworld en modifiant le déploiement :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc edit deploy helloworld-service-vertx*
+----
+include::includes/tip.adoc[]
+
+Dans l'éditeur, ajoutez une Liveness Probe :
+
+[source, yaml, subs="normal,attributes"]
+----
+apiVersion: extensions/v1beta1
+kind: Deployment
+...
+spec:
+...
+  template:
+    ...
+    spec:
+      ... 
+      containers:
+      - image: rafabene/microservices-helloworld-vertx:...
+        *livenessProbe:
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          httpGet:
+            path: /api/hello/Kubernetes
+            port: 8080*
+      ...
+----
+
+NOTE: Vous pouvez configurer à la fois Liveness Probe et Readiness Probe en vérifiant via une requête HTTP GET, une requête HTTPS GET, la connectivité du port TCP ou même un script shell ! Consultez le http://kubernetes.io/docs/user-guide/production-pods/#liveness-and-readiness-probes-aka-health-checks [Guide de vivacité et de préparation] pour plus d'informations.
+
+Vous pouvez ajouter une sonde de préparation de la même manière :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc edit deployment helloworld-service-vertx*
+----
+include::includes/tip.adoc[]
+
+Dans l'éditeur, ajoutez une sonde de préparation :
+
+[source, yaml, subs="normal,attributes"]
+----
+apiVersion: extensions/v1beta1
+kind: Deployment
+...
+spec:
+...
+  template:
+    ...
+    spec:
+      ... 
+      containers:
+      - image: rafabene/microservices-helloworld-vertx:...
+        *readinessProbe:
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          httpGet:
+            path: /api/hello/Kubernetes
+            port: 8080*
+      ...
+----
+
+NOTE: En production, Liveness Probe et la Readiness Probe seront probablement des endpoints REST ou des scripts différents.

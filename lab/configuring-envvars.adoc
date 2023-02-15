@@ -1,0 +1,23 @@
+#### Variables d'environnement
+
+http://vertx.io/[Vert.X] peut lire la configuration surchargée directement à partir d'une variable d'environnement. Dans ce cas, la variable d'environnement est par défaut _greeting_. Vous pouvez spécifier la variable d'environnement directement à l'aide de la commande _oc_ :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc set env deployment helloworld-service-vertx GREETING='Hello {name} from envvar!'*
+deployment "helloworld-service-vertx" updated
+----
+
+Encore une fois, grâce à l'utilisation de *Kubernetes Deployment*, il mettra à jour tous les réplicas avec la nouvelle configuration ! Si vous deviez actualiser l'application, vous remarquerez qu'il n'y a pas d'erreurs intermittentes, car nous avons également mis en place les health checks et les readiness checks.
+
+Vérifiez l'application pour voir si elle utilise la nouvelle valeur de la variable GREETING.
+
+Supprimons la variable définie :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc set env deployment helloworld-service-vertx GREETING-*
+deployment "helloworld-service-vertx" updated
+----
+
+NOTE: Le '-' signifie que nous voulons supprimer cette variable d'environnement du déploiement.

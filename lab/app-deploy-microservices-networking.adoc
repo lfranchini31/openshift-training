@@ -1,0 +1,67 @@
+#### Réseau interne OpenShift
+Duration: 7:00
+
+Dans Kubernetes, chaque pod a une adresse IP unique ! Vous pouvez vous « connecter » à l'un de ces pods à l'aide de la commande _oc exec_ (ou _oc rsh_). Cela peut vous déposer dans un shell et exécuter des commandes à l'intérieur du conteneur.
+
+Avec les versions récentes d'OpenShift, la commande _oc debug_ est plus appropriée (un pod est alors créé spécialement pour que vous puissiez faire vos tests).
+
+Tout d'abord, trouvez le nom des deux pods helloworld-service-vertx :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get pods -l app=helloworld-service-vertx*
+NAME                             READY     STATUS    RESTARTS   AGE
+helloworld-service-vertx-?????   1/1       Running   0          14m
+helloworld-service-vertx-?????   1/1       Running   0          15m
+----
+
+NOTE: Notez que nous avons utilisé le paramètre _-l app=helloworld-service-vertx_. Ce paramètre nous permet de spécifier des labels comme filtre. Le label _app=helloworld-service-vertx_ a été définie dans le ReplicationController comme modèle pour tous les pods.
+
+Ensuite, utilisez _oc exec_ pour exécuter un processus _"bash"_ dans le conteneur (ENCORE !!!):
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc exec -it helloworld-service-vertx-????? bash* # vous oouvez utiliser aussi oc rsh helloworld-service-vertx-?????
+bash-4.2$ _
+----
+
+Vous êtes maintenant dans un shell à l'intérieur du container **helloworld-service-vertx**. Vous pouvez exécuter _ps_ et _hostname_ :
+
+[source, bash, subs="normal,attributes"]
+----
+bash-4.2$ *ps aux*
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+1000160+      1  0.5  0.1 4123640 68904 ?       Ssl  19:12   0:01 java -Dvertx.disableFileCPResolving=true -Xmx256m -jar
+1000160+     44  0.0  0.0  11768  1676 ?        Ss   19:13   0:00 bash
+1000160+     50  0.0  0.0  47420  1668 ?        R+   19:15   0:00 ps aux
+
+bash-4.2$ *hostname -i*
+10.1.6.3
+
+bash-4.2$ *exit*
+exit
+----
+
+N'oubliez pas de quitter :).
+
+Essayez-le avec un autre pod et voyez son adresse IP.
+
+Étant donné que nous exécutons deux instances du service Hello World (une instance dans un pod) et que les adresses IP sont non seulement uniques, mais également éphémères, comment un client accédera-t-il à nos services ? Nous avons besoin d'un moyen de découvrir le service.
+
+Dans Kubernetes, Service Discovery est un citoyen de première classe. Nous avons créé un service qui va :
+
+- agir en tant qu'équilibreur de charge pour équilibrer la charge des requêtes vers les pods, et
+- fournissez une adresse IP stable, autorisez la découverte à partir de l'API et créez également un nom DNS !
+
+Si vous vous connectez à un conteneur (recherchez et utilisez le conteneur frontend-ui), vous pouvez accéder au helloworldservice via le nom DNS :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc rsh frontend-ui-????? bash*
+
+bash-4.2$  *wget -qO- http://helloworld-service-vertx:8080/api/hello/Rafael*
+Hello Rafael from helloworld-service-vertx-a4zq3 with 1.0
+
+bash-4.2$ *exit*
+exit
+----

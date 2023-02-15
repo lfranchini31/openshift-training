@@ -1,0 +1,21 @@
+### Déployer le service front-end
+Duration 3:00
+
+Chaque Pod a une adresse IP unique - mais l'adresse est éphémère. Les adresses IP des pods ne sont pas stables et peuvent changer lorsque les pods démarrent et/ou redémarrent. Un service fournit un point d'accès unique à un ensemble de pods répondant à certaines contraintes. Une adresse IP de service est stable.
+
+Créez the service frontend :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc create -f frontend-service.yaml*
+service/frontend-ui created
+----
+
+And vérifier que c'est OK :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get services*
+NAME          TYPE           CLUSTER-IP     EXTERNAL-IP                 PORT(S)        AGE
+frontend-ui   ClusterIP      172.30.10.226    <none>                    80/TCP         8s                    
+----

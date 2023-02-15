@@ -1,0 +1,90 @@
+### Déployer les deux microservices
+Duration: 5:00
+
+Comme mentionné précédemment, l'application utilise deux autres microservices :
+
+- le service Guestbook (qui écrit dans la base de données MySQL)
+- un service Hello World
+
+Les deux services sont des conteneurs dont les images contiennent des fichiers JAR auto-exécutables. Les sources sont disponibles dans le référentiel git si vous êtes intéressé à le voir.
+
+Lors du déploiement de ces instances de microservices, nous voulons nous assurer que :
+
+* Nous pouvons faire évoluer le nombre d'instances une fois déployées.
+* Si l'une des instances devient défectueuse et/ou échoue, nous voulons nous assurer qu'elle est redémarrée automatiquement.
+
+Déployons les microservices un par un :
+
+Tout d'abord, déployez Hello World :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc create -f helloworldservice-deployment.yaml -f helloworldservice-service.yaml*
+deployment.extensions/helloworld-service-vertx created
+service/helloworld-service-vertx created
+----
+
+Une fois créés, vous pouvez voir les replicas avec :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get deployments (ou deploy)*
+NAME                       DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+frontend-ui                2         2         2            2           12m
+helloworld-service-vertx   2         2         2            2           22s
+mysql                      1         1         1            1           3m
+----
+
+Vous pouvez voir les pods en cours d'exécution :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get pods*
+NAME                             READY     STATUS    RESTARTS   AGE
+frontend-ui-1bvcv                1/1       Running   0          2h
+frontend-ui-5vtsp                1/1       Running   0          2h
+helloworld-service-vertx-prnhv   1/1       Running   0          4m
+helloworld-service-vertx-sgds6   1/1       Running   0          4m
+mysql-xvi3c                      1/1       Running   0          1h
+----
+
+Vous pouvez également consulter la sortie des logs de chaque pod en exécutant :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc logs -f helloworld-service-vertx-?????*
+Aug 02, 2016 5:38:11 AM io.vertx.core.impl.launcher.commands.VertxIsolatedDeployer
+INFO: Succeeded in deploying verticle
+----
+*Note:* The _-f_ flag affiche en continu les logs.  Pour arrêter ce suivi, appuyer sur _Ctrl+C_.
+
+Notre fichier descripteur spécifiait 2 répliques. Ainsi, si vous supprimez l'un des pods (et que vous n'avez plus qu'un seul réplica au lieu de 2), le ReplicationController le remarquera et démarrera un autre pod pour que vous respectiez la spécification configurée des 2 réplicas. Essayons!
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc delete pod helloworld-service-vertx-?????*
+pod "helloworld-service-vertx-????" deleted
+----
+
+Vous devriez voir que le pod a été supprimé et le ReplicationController s'assurera qu'une deuxième instance est démarrée. Parfois, cela passe très vite - et vous remarquerez que le pod que vous avez supprimé n'est plus là et qu'un autre pod, avec un nom différent, a été démarré.
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get pods*
+NAME                             READY     STATUS    RESTARTS   AGE
+...
+helloworld-service-vertx-ezuq3   1/1       Running   0          1m
+helloworld-service-vertx-sgds6   1/1       Running   0          10m
+...
+----
+
+Enfin, créons également le service et le ReplicaSet du Guestbook.
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc create -f guestbookservice-deployment.yaml -f guestbookservice-service.yaml*
+deployment "guestbook-service" created
+service "guestbook-service" created
+----
+
+include::app-deploy-microservices-networking.adoc[]

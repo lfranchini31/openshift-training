@@ -1,0 +1,157 @@
+#### Utiliser une ConfigMap
+
+Dans cette section, nous utiliserons l'objet ConfigMap, pour configurer l'application. Vous pouvez stocker plusieurs fichiers de configuration basés sur des chaînes dans une seule configuration ConfigMap. Dans notre exemple, nous allons stocker le fichier config.json de Vert.x dans une entrée ConfigMap (Attention : les ConfigMap ont une taille max 1MB).
+
+Tout d'abord, mettez à jour _kubernetes-lab/hellworld-service/config.json_ avec une nouvelle valeur de configuration :
+[source, bash, subs="normal,attributes"]
+----
+$ *cd openshift-training/hellworld-service/*
+$ *vi config.json*
+----
+include::includes/tip.adoc[]
+
+Une petite suggestion :
+
+[source, json, subs="normal,attributes"]
+----
+{
+  "GREETING": "Hello {name} from ConfigMap"
+}
+----
+
+Ensuite, créez une entrée ConfigMap avec ce fichier :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc create configmap greeting-config --from-file=config.json*
+configmap "greeting-config" created
+----
+
+Jetons un coup d'oeil à l'intérieur de l'entrée nouvellement créée :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc edit configmap greeting-config*
+# HINT: Type ':wq' to exit from vi
+----
+
+Vous verrez que le _config.json_ fait maintenant partie du fichier YAML :
+
+[source, yaml, subs="normal,attributes"]
+----
+apiVersion: v1
+data:
+  *config.json: |
+    {
+      "GREETING": "Hello {name} from ConfigMap"
+    }*
+kind: ConfigMap
+...
+----
+
+Bien sûr, vous pouvez également modifier cette ConfigMap dans l'éditeur. Si vous le faites, modifiez uniquement la valeur de la variable GREETING.
+
+Il existe plusieurs manières d'accéder aux valeurs de ce ConfigMap :
+
+* Montez les entrées (dans notre cas, config.json) sous forme de fichier.
+* Accès depuis l'API Kubernetes (nous n'en parlerons pas aujourd'hui).
+
+Voyons comment nous pouvons monter les configurations sous forme de fichiers sous un répertoire spécifique, par exemple, _/etc/config/config.json_.
+
+Tout d'abord, modifiez le déploiement du service Helloworld :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc edit deployment helloworld-service-vertx*
+----
+include::includes/tip.adoc[]
+
+Dans l'éditeur, ajoutez des volumes et des montages de volume (important - l'indentation compte !) :
+
+[source,yaml, subs="normal,attributes"]
+----
+apiVersion: v1
+kind: DeploymentConfig
+...
+spec:
+...
+  template:
+    ...
+    spec:
+      *volumes:
+      - name: config-volume
+        configMap:
+          name: greeting-config*
+      containers:
+      - image: rafabene/microservices-helloworld-vertx:1.0
+        *volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config*
+      ...
+----
+
+Cela rendra le fichier de configuration disponible en tant que fichier _/etc/config/config.json_. Vérifions en allant dans le pod lui-même (rappelez-vous comment faire cela en utilisant _kubectl exec_ ? Vous pouvez également utiliser _oc exec_, mais vous allez maintenant apprendre une autre option : _oc rsh_) :
+
+Tout d'abord, recherchez le nom du pod :
+
+[source, bash, subs="normal,attributes"]
+----
+$ *oc get pods*
+NAME                               READY     STATUS    RESTARTS   AGE
+...
+helloworld-service-vertx-7-e1o5u   1/1       Running   0          54s
+helloworld-service-vertx-7-sgosp   1/1       Running   0          40s
+...
+----
+
+Ensuite, exécutez un shell à l'intérieur du pod et voyez ce qu'il y a dans _/etc/config_ :
+
+[source,bash, subs="normal,attributes"]
+----
+$ *oc rsh helloworld-service-vertx-7-?????*
+
+sh-4.2$ *ls /etc/config/*
+config.json
+
+sh-4.2$ *cat /etc/config/config.json*
+{
+  "GREETING": "Hello {name} from ConfigMap"
+}
+
+sh-4.2$ *exit*
+exit
+----
+
+NOTE: N'oubliez pas de sortir de l'environnement du pod !
+
+Le fichier est là, mais l'application doit être configurée pour faire référence au fichier. Vert.x peut faire référence à une configuration externe avec l'argument de ligne de commande :
+
+[source,subs="normal,attributes"]
+----
+-conf /etc/config/config.json
+----
+
+Comme précédemment, Modifiez le déploiement du service Helloworld et ajoutez les arguments :
+
+[source,yaml, subs="normal,attributes"]
+----
+apiVersion: v1
+kind: Deployment
+...
+spec:
+...
+  template:
+    ...
+    spec:
+      ... 
+      containers:
+      - image: rafabene/microservices-helloworld-vertx:...
+        *args:
+        - -conf 
+        - /etc/config/config.json*
+      ...
+----
+
+Vérifiez l'application pour voir si elle utilise la nouvelle chaîne de salutation.
+
+Enfin, vous pouvez également spécifier de simples paires clé/valeur dans ConfigMap, puis les exposer directement en tant que variables d'environnement également. Voir le http://kubernetes.io/docs/user-guide/configmap/[ConfigMap guide] pour plus d'exemples.

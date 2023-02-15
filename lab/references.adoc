@@ -1,0 +1,10 @@
+## References
+
+- link:http://bit.ly/k8s-lab[Google's Kubernetes lab] by link:https://twitter.com/saturnism[Ray Tsang]
+- link:https://github.com/redhat-developer-demos/docker-java[docker for Java Developers] by link:https://twitter.com/rhdevelopers[Red Hat Developers]
+- link:https://docs.openshift.com/container-platform/3.11/welcome/index.html[OpenShift] docs
+- link:http://kubernetes.io/docs/[Kubernetes] docs
+- link:http://vertx.io/[Vert.X] - a tool-kit for building reactive applications on the JVM
+- link:http://wildfly-swarm.io/[WildFly Swarm] - A link:http://microprofile.io/[Microprofile] application server
+- Red Hat's link:http://developers.redhat.com/products/cdk/[CDK] - Container Development Kit
+- link:https://github.com/redhat-helloworld-msa/helloworld-msa[Helloworld-MSA] - Your microservices sandbox in CDK.
