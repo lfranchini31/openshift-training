@@ -1,19 +1,13 @@
-# Qpenshift-training
+# OpenShift Lab
 
-This training was written with the intent of helping folks get up and running with OpenShift:
+This training is based on [Kubernetes Lab](https://github.com/redhat-developer-demos/kubernetes-lab) by [Rafael Benevides](https://twitter.com/rafabene).
 
-- Running your first (or second?) container
-- Learning what containers are
-- Build, Deploy and Share containers
-- Support multi-container applications
-- Using Docker Compose to simplify the definition and sharing of applications
+We’re going to work through this **Guestbook example**. This example has a frontend using HTML5 and Javascript (client-side and server-side), and two microservices built using WildFly Swarm and VertX. It requires MySQL to store guestbook entries.
 
----
+Furthermore, the microservices use: [WildFly Swarm](http://wildfly-swarm.io/) - A Java [microprofile](http://microprofile.io/) server, and [Vert.x](http://vertx.io/) - A a tool-kit for building reactive applications on the JVM.
 
-Cette formation a été réalisée dans le but d'aider les personnes à appréhender les containers et elle couvre les sujets suivants :
-
-- Exécuter votre premier (ou deuxième ?) container
-- Apprendre ce que sont les containers
-- Construire des images, les déployer et les partager
-- Prendre en charge des applications multi-containers
-- Utiliser Docker Compose pour simplifier la définition et le partage d'applications
+   - [Lab documentation](lab/)
+   - [Front-end source code](frontend/)
+   - [Helloworld Microservice - implemented using Vert.x](helloworld-service/)
+   - [Guestbook Microservice - implemented using WildFly Swarm](guestbook-service/)
+   - [Kubernetes files](kubernetes/)
