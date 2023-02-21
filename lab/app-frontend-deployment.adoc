@@ -3,11 +3,7 @@ Duration: 5:00
 
 Un pod Kubernetes est un groupe de conteneurs, liés ensemble à des fins d'administration et de mise en réseau. Il peut contenir un ou plusieurs conteneurs. Tous les conteneurs d'un même pod partageront la même interface réseau, la même adresse IP, les mêmes volumes, etc. Tous les conteneurs d'une même instance de pod vivront et mourront ensemble. C'est particulièrement utile lorsque vous avez, par exemple, un conteneur qui exécute l'application et un autre conteneur qui interroge périodiquement les journaux/métriques du conteneur d'application.
 
-You can start a single Pod in Kubernetes by creating a Pod resource. However, a Pod created this way would be known as a link:https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replication-controllers-and-jobs[Naked Pod]. However, if a Naked Pod dies/exits, it will not be restarted by Kubernetes. A better way to start a pod, is by using a higher-level construct such as Replication Controller, Replica Set, or a Deployment.
-
 Vous pouvez démarrer un seul pod dans Kubernetes en créant une ressource de pod. Cependant, un pod créé de cette manière serait connu sous le nom de lien : https://kubernetes.io/docs/concepts/configuration/overview/#naked-pods-vs-replication-controllers-and-jobs[Naked Pod]. Cependant, si un pod tombe dans ce cas, il ne sera pas redémarré par Kubernetes. La meilleure façon de démarrer un pod consiste à utiliser une construction de niveau supérieur telle que le Replication Controller, ReplicaSet, Deployment ou DeploymentConfig.
-
-A Replication Controller ensures that a specified number of pod "replicas" are running. If there are too many pods, it will kill some. If there are too few, the replication controller will start more. Unlike manually created pods, the pods maintained by a replication controller are automatically replaced if they fail, get deleted, or are terminated.
 
 Un Replication Controller ou ReplicaSet garantit qu'un nombre spécifié de "replicas" de pod sont en cours d'exécution. Contrairement aux pods créés manuellement, les pods gérés par un Replication Controller sont automatiquement remplacés s'ils échouent, sont supprimés ou sont arrêtés.
 
@@ -18,8 +14,7 @@ Un Deployment fournit des mises à jour déclaratives pour les pods et les contr
 - Retour à une révision de Deployment antérieure si le Deployment actuel n'est pas stable.
 - Mettre en pause et reprendre un Deployment.
 
-First create a Deployment using kubectl, the Kubernetes CLI tool:
-Créez d'abord un Deployment à l'aide de https://kubernetes.io/fr/docs/reference/kubectl/[kubectl] https://access.redhat.com/documentation/en-us/openshift_container_platform/4.12/html-single/cli_tools/index#cli-getting-started[oc], le Kuberne
+Créez d'abord un déploiement à l'aide de oc (ou kubectl), l'outil CLI (client) de OpenShift / Kubernetes (https://kubernetes.io/fr/docs/reference/kubectl/[kubectl] et https://access.redhat.com/documentation/en-us/openshift_container_platform/4.12/html-single/cli_tools/index#cli-getting-started[oc]) :
 
 [source, bash, subs="normal,attributes"]
 ----

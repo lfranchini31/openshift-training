@@ -1,6 +1,6 @@
 ### Graceful Shutdown
 Duration: 5:00
 
-Lorsqu'un pod doit être supprimé (comme la réduction du nombre de répliques), Kubernetes enverra le signal SIGTERM au processus. Le processus doit effectuer tous les nettoyages. Cependant, nous ne pouvons pas attendre indéfiniment que le processus se termine. Par défaut, Kubernetes attend 30 secondes avant d'envoyer le signal SIGKILL final pour tuer le processus. Si votre processus nécessite plus ou moins de temps, vous pouvez le configurer via la configuration des périodes de grâce de résiliation (voir lien : http://kubernetes.io/docs/user-guide/pods/#termination-of-pods[guide]).
+Lorsqu'un pod doit être supprimé (comme la réduction du nombre de répliques), OpenShift enverra le signal SIGTERM au processus. Le processus doit effectuer tous les nettoyages. Cependant, nous ne pouvons pas attendre indéfiniment que le processus se termine. Par défaut, OpenShift attend 30 secondes avant d'envoyer le signal SIGKILL final pour tuer le processus. Si votre processus nécessite plus ou moins de temps, vous pouvez le configurer via la configuration des périodes de grâce de résiliation (voir lien : http://kubernetes.io/docs/user-guide/pods/#termination-of-pods[guide]).
 
-Optionally, you can also ask Kubernetes to execute a shutdown command via the pre-stop lifecycle hook. Read through the link:http://kubernetes.io/docs/user-guide/pods/#termination-of-pods[documentation] the learn more - we won't implement this during the lab.
+En option, vous pouvez également demander à OpenShift d'exécuter une commande d'arrêt via le "pre-stop lifecycle hook". Lisez le lien : http://kubernetes.io/docs/user-guide/pods/#termination-of-pods[documentation] pour en savoir plus - nous ne l'implémenterons pas pendant le lab.

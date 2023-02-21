@@ -1,24 +1,22 @@
 #-------------------------
 # Target: doc
 #-------------------------
-.PHONY: doc doc.html doc.pdf
+.PHONY: doc doc.html clean
 
 ## Generate the documentation from asciidoc
 doc: doc.html doc.pdf
 
-doc.html:
-	@echo "==> generating documentation: html"
-	@docker run --rm -u $$(id -u $${USER}):$$(id -g $${USER}) \
-		-v `pwd`:/documents/ asciidoctor/docker-asciidoctor asciidoctor -b html5 \
-		-D /documents -r asciidoctor-diagram lab/readme.adoc
-
-doc.pdf:
-	@echo "==> generating documentation: pdf"
+doc.pdf: clean
+	@echo "==> generating openShift lab: pdf"
 	@docker run --rm -u $$(id -u $${USER}):$$(id -g $${USER}) \
 		-v `pwd`:/documents/ asciidoctor/docker-asciidoctor asciidoctor-pdf \
 		-a source-highlighter=pygments \
 		-a pygments-style=manni \
 		-D /documents -r asciidoctor-diagram lab/readme.adoc
+
+# Remove previous documentation
+clean:
+	rm -f readme*.*
 
 #-------------------------
 # Target: help

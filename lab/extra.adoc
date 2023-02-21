@@ -66,11 +66,11 @@ N'oubliez pas d'exposer la *Route* et essayez l'application. Vous souvenez-vous 
 
 ### Construire une nouvelle version.
 
-When OpenShift is installed in a public address, you can enable link:https://developer.github.com/webhooks/[Github webhooks] that triggers a new OpenShift build each commit. This is useful for Continuous Integration environments. You can read more about it in the following link:https://docs.openshift.com/container-platform/3.11/dev_guide/builds/triggering_builds.html[guide].
+Lorsqu'OpenShift est installé dans une adresse publique, vous pouvez activer le lien : https://developer.github.com/webhooks/[Github webhooks] qui déclenche une nouvelle génération OpenShift à chaque validation. Ceci est utile pour les environnements d'intégration continue. Vous pouvez en savoir plus à ce sujet dans le lien suivant :https://docs.openshift.com/container-platform/3.11/dev_guide/builds/triggering_builds.html[guide].
 
 Vous pouvez également déclencher un nouveau build à l'aide de la commande *oc start-build <buildname>*. Il vous permet de spécifier un emplacement différent pour les sources. Essayez-le vous-même ! Clonez le référentiel ou apportez une modification locale et exécutez la commande.
 
-Some examples that you can try.
+Quelques exemples que vous pouvez essayer.
 
 NOTE: Pour construire à partir de local, vous devez vous trouver à la racine du repository (openshift-training) car vous avez déjà spécifié le paramètre --context-dir=frontend.
 
