@@ -25,6 +25,12 @@ Kubernetes doit être conscient de la nouvelle image Docker avec les modificatio
 
 TIP: Remplacer rafabene/microservices-frontend:2.0 to <votre_nom>/microservices-frontend:2.0
 
+Pour pouvoir faire le build, vous ne pouvez pas utiliser la plateforme OpenShift Sandbox pour construire la nouvelle image car ni docker et ni podman ne sont installés.
+
+Nous allons réutiliser la Plateforme https://labs.play-with-docker.com/[Play with Docker].
+
+Par conséquent, connectez-vous sur cette plateforme (cf. la procédure décrite dans la partie 1 de la formation), cloner le repository git https://github.com/lfranchini31/openshift-training[training OpenShift] et se positionner dans le répertoire *openshift-training/frontend*.
+
 [source, bash, subs="normal,attributes"]
 ----
 $ *docker build -t <your_username>/microservices-frontend:2.0 .*
