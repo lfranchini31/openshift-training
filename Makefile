@@ -4,19 +4,23 @@
 .PHONY: doc doc.html clean
 
 ## Generate the documentation from asciidoc
-doc: doc.html doc.pdf
+doc: doc.pdf
 
 doc.pdf: clean
-	@echo "==> generating openShift lab: pdf"
+	@echo "==> Generate Training OpenShift Labs: pdf"
 	@docker run --rm -u $$(id -u $${USER}):$$(id -g $${USER}) \
 		-v `pwd`:/documents/ asciidoctor/docker-asciidoctor asciidoctor-pdf \
 		-a source-highlighter=pygments \
 		-a pygments-style=manni \
-		-D /documents -r asciidoctor-diagram lab/readme.adoc
+		-D /documents -r asciidoctor-diagram \
+		lab/readme.adoc
+	
+	@echo "==> Rename Output file"	
+	@mv readme.pdf CSH-Formation-Openshift-2023-Partie2-Labs.pdf
 
 # Remove previous documentation
 clean:
-	rm -f readme*.*
+	rm -f CSH-Formation*.*
 
 #-------------------------
 # Target: help
